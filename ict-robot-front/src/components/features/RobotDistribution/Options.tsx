@@ -12,12 +12,8 @@ export const Options = ({ setRobotId }: Props) => {
   return (
     <Wrapper>
       <OptionTitle>조회 로봇</OptionTitle>
-      <Select
-        variant="outline"
-        placeholder="로봇을 선택하세요"
-        onChange={handleChange}
-        backgroundColor="#fff"
-      >
+      <Select variant="outline" defaultValue="all" onChange={handleChange} backgroundColor="#fff">
+        <option value="all">전체</option>
         <option>1</option>
         <option>2</option>
         <option>3</option>

@@ -39,6 +39,7 @@ const SidebarWrapper = styled.div`
   padding: 30px 30px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   overflow-y: auto;
+  z-index: 9999;
 `;
 
 const Content = styled.div`

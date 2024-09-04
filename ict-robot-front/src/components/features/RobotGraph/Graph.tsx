@@ -38,9 +38,9 @@ export const Graph = ({ data }: GraphProps) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="plastic" stroke="#D98573" name="플라스틱" />
-          <Line type="monotone" dataKey="paper" stroke="#D9C373" name="종이" />
-          <Line type="monotone" dataKey="general" stroke="#B273D9" name="일반쓰레기" />
+          <Line type="monotone" dataKey="general" stroke="#B273D9" name="플라스틱" />
+          <Line type="monotone" dataKey="paper" stroke="#D9C373" name="종이팩" />
+          <Line type="monotone" dataKey="plastic" stroke="#D98573" name="캔" />
           <Line type="monotone" dataKey="all" stroke="#7BADD5" name="전체" />
         </LineChart>
       </ResponsiveContainer>

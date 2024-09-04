@@ -7,7 +7,7 @@ export const Footer = () => {
   return (
     <Wrapper>
       <Container>
-        <p>카카오톡 선물하기</p>
+        <p></p>
       </Container>
     </Wrapper>
   );

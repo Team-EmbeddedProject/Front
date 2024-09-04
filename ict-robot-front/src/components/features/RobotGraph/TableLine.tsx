@@ -26,10 +26,10 @@ export const TableLine = ({ tableType, data }: Props) => {
           플라스틱
         </Column>
         <Column width={TABLE_WIDTH.PAPER} color="#91a543">
-          종이
+          종이팩
         </Column>
         <Column width={TABLE_WIDTH.GENERAL} color="#91a543">
-          일반쓰레기
+          캔
         </Column>
         <Column width={TABLE_WIDTH.ALL} color="#91a543">
           전체
@@ -43,13 +43,13 @@ export const TableLine = ({ tableType, data }: Props) => {
           {data.time}
         </Column>
         <Column width={TABLE_WIDTH.PLASTIC} color="#383838">
-          {data.plastic}
+          {data.general}
         </Column>
         <Column width={TABLE_WIDTH.PAPER} color="#383838">
           {data.paper}
         </Column>
         <Column width={TABLE_WIDTH.GENERAL} color="#383838">
-          {data.general}
+          {data.plastic}
         </Column>
         <Column width={TABLE_WIDTH.ALL} color="#383838">
           {data.all}

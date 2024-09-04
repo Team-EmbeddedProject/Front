@@ -2,6 +2,9 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { Map, MapMarker } from "react-kakao-maps-sdk";
 
+import marker_can from "@/assets/marker_can.png";
+import marker_pack from "@/assets/marker_pack.png";
+import marker_plastic from "@/assets/marker_plastic.png";
 import type { MapData } from "@/types";
 
 type Props = {
@@ -33,6 +36,18 @@ export const MapContainer = ({ data }: Props) => {
           position={element.latlng}
           onMouseOver={() => handleMouseOver(index)}
           onMouseOut={handleMouseOut}
+          image={{
+            src:
+              element.trashType == "플라스틱"
+                ? marker_plastic
+                : element.trashType == "캔"
+                  ? marker_can
+                  : marker_pack,
+            size: {
+              width: 18,
+              height: 18,
+            },
+          }}
         >
           {activeInfoWindow == index && (
             <Detail>
