@@ -24,10 +24,10 @@ export const MapContainer = ({ data }: Props) => {
 
   return (
     <Map
-      center={data[0].latlng}
+      center={data.length != 0 ? data[0].latlng : { lat: 35.887445, lng: 128.611655 }}
       style={{
-        width: "calc(100vw - 300px)",
-        height: "calc(100vh - 54px)",
+        width: "100%",
+        height: "100%",
       }}
     >
       {data.map((element, index) => (
@@ -38,9 +38,9 @@ export const MapContainer = ({ data }: Props) => {
           onMouseOut={handleMouseOut}
           image={{
             src:
-              element.trashType == "플라스틱"
+              element.trashType == "plastic"
                 ? marker_plastic
-                : element.trashType == "캔"
+                : element.trashType == "can"
                   ? marker_can
                   : marker_pack,
             size: {

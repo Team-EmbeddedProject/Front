@@ -3,8 +3,10 @@ export const RouterPath = {
   home: "/",
   aboutUs: "/aboutus",
   robotLog: "/robotlog",
+  robotControl: "/control",
   robotDistribution: "/distribution",
   robotGraph: "/graph",
+  analysis: "/analysis",
   notFound: "*",
 };
 

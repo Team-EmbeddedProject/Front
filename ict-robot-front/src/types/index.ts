@@ -2,8 +2,8 @@ export type RobotLog = {
   time: string;
   id: string;
   location: {
-    latitude: string;
-    longitude: string;
+    row: string;
+    column: string;
   };
   battery: string;
 };
@@ -12,8 +12,8 @@ export type TrashResult = {
   time: string;
   all: number;
   plastic: number;
-  paper: number;
-  general: number;
+  pack: number;
+  can: number;
 };
 
 export type MapData = {
@@ -24,4 +24,25 @@ export type MapData = {
   };
   time: string;
   trashType: string;
+};
+
+export type RobotData = {
+  id: string;
+  ip: string;
+  name: string;
+};
+
+export type AnalysisAmountData = {
+  time: string;
+  plastic: number;
+  paper: number;
+  can: number;
+  rubber: number;
+  glass: number;
+  all: number;
+};
+
+export type AnalysisChangeData = {
+  time: string;
+  change: number;
 };

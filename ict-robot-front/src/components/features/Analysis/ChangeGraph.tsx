@@ -10,13 +10,13 @@ import {
   YAxis,
 } from "recharts";
 
-import type { TrashResult } from "@/types";
+import type { AnalysisChangeData } from "@/types";
 
 type GraphProps = {
-  data: TrashResult[];
+  data: AnalysisChangeData[];
 };
 
-export const Graph = ({ data }: GraphProps) => {
+export const ChangeGrpah = ({ data }: GraphProps) => {
   return (
     <Wrapper>
       <ResponsiveContainer width="100%" height={500} minWidth={550}>
@@ -31,13 +31,10 @@ export const Graph = ({ data }: GraphProps) => {
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="time" />
-          <YAxis />
+          <YAxis domain={[-100, 100]} />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="plastic" stroke="#B273D9" name="플라스틱" />
-          <Line type="monotone" dataKey="pack" stroke="#D9C373" name="종이팩" />
-          <Line type="monotone" dataKey="can" stroke="#D98573" name="캔" />
-          <Line type="monotone" dataKey="all" stroke="#7BADD5" name="전체" />
+          <Line type="monotone" dataKey="change" stroke="#7BADD5" name="변화량" />
         </LineChart>
       </ResponsiveContainer>
     </Wrapper>

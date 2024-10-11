@@ -1,0 +1,21 @@
+:root {
+  --color-basic: #2c2c2c;
+  --color-white: #fff;
+  --color-lightgray: #adadad;
+  --color-gray: #555;
+  --color-primary: #7badd5;
+  --color-secondary: #acd9ef;
+  --color-sidebar_back: #fafcfd;
+  --color-camstream_back: #eee;
+
+  --font-size-p: 16px;
+  --font-size-h3: 24px;
+  --font-size-h2: 32px;
+
+  --font-weight-light: 300;
+  --font-weight-medium: 400;
+  --font-weight-semi_bold: 500;
+  --font-weight-bold: 700;
+
+  --logo-size: 24px;
+}

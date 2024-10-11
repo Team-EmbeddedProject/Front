@@ -24,5 +24,5 @@ export const LogTable = ({ data }: Props) => {
 };
 
 const Wrapper = styled.div`
-  width: auto;
+  width: 600px;
 `;

@@ -10,13 +10,13 @@ import {
   YAxis,
 } from "recharts";
 
-import type { TrashResult } from "@/types";
+import type { AnalysisAmountData } from "@/types";
 
 type GraphProps = {
-  data: TrashResult[];
+  data: AnalysisAmountData[];
 };
 
-export const Graph = ({ data }: GraphProps) => {
+export const AmountGraph = ({ data }: GraphProps) => {
   return (
     <Wrapper>
       <ResponsiveContainer width="100%" height={500} minWidth={550}>
@@ -34,10 +34,12 @@ export const Graph = ({ data }: GraphProps) => {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="plastic" stroke="#B273D9" name="플라스틱" />
-          <Line type="monotone" dataKey="pack" stroke="#D9C373" name="종이팩" />
-          <Line type="monotone" dataKey="can" stroke="#D98573" name="캔" />
-          <Line type="monotone" dataKey="all" stroke="#7BADD5" name="전체" />
+          <Line type="monotone" dataKey="plastic" stroke="#CB55DD" name="플라스틱" />
+          <Line type="monotone" dataKey="paper" stroke="#FFCB77" name="종이" />
+          <Line type="monotone" dataKey="can" stroke="#FE6D73" name="캔" />
+          <Line type="monotone" dataKey="can" stroke="#40CBA3" name="가죽" />
+          <Line type="monotone" dataKey="can" stroke="#5759B7" name="유리" />
+          <Line type="monotone" dataKey="all" stroke="#A4A4A4" name="전체" />
         </LineChart>
       </ResponsiveContainer>
     </Wrapper>

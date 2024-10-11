@@ -8,10 +8,9 @@ type Props = {
 };
 
 const TABLE_WIDTH = {
-  TIME: "150px",
+  TIME: "250px",
   ID: "100px",
   LOCATION: "200px",
-  BATTERY: "100px",
 };
 
 export const TableLine = ({ tableType, data }: Props) => {
@@ -27,9 +26,6 @@ export const TableLine = ({ tableType, data }: Props) => {
         <Column width={TABLE_WIDTH.LOCATION} color="#91a543">
           LOCATION
         </Column>
-        <Column width={TABLE_WIDTH.BATTERY} color="#91a543">
-          BATTERY(%)
-        </Column>
       </Wrapper>
     );
   } else if (data) {
@@ -42,10 +38,7 @@ export const TableLine = ({ tableType, data }: Props) => {
           {data.id}
         </Column>
         <Column width={TABLE_WIDTH.LOCATION} color="#383838">
-          ({data.location.latitude}, {data.location.longitude})
-        </Column>
-        <Column width={TABLE_WIDTH.BATTERY} color="#383838">
-          {data.battery}
+          ({data.location.row}, {data.location.column})
         </Column>
       </Wrapper>
     );

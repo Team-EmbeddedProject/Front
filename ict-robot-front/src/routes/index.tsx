@@ -2,7 +2,9 @@ import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom"
 
 import { Layout } from "@/components/features/Layout";
 import { AboutUsPage } from "@/pages/AboutUs";
+import { AnalysisPage } from "@/pages/Analysis";
 import { HomePage } from "@/pages/Home";
+import { RobotControlPage } from "@/pages/RobotControl";
 import { RobotDistributionPage } from "@/pages/RobotDistribution";
 import { RobotGraphPage } from "@/pages/RobotGraph";
 import { RobotLogPage } from "@/pages/RobotLog";
@@ -27,12 +29,20 @@ const router = createBrowserRouter([
         element: <RobotLogPage />,
       },
       {
+        path: RouterPath.robotControl,
+        element: <RobotControlPage />,
+      },
+      {
         path: RouterPath.robotDistribution,
         element: <RobotDistributionPage />,
       },
       {
         path: RouterPath.robotGraph,
         element: <RobotGraphPage />,
+      },
+      {
+        path: RouterPath.analysis,
+        element: <AnalysisPage />,
       },
       {
         path: RouterPath.notFound,

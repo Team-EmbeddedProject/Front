@@ -1,124 +1,175 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
+import { format } from "date-fns";
+import { createContext, useContext, useEffect, useState } from "react";
 
+import { useGetTrashResult } from "@/api/hooks/useGetResult";
+import { useGetGraphPeriod } from "@/api/hooks/useGetResultTime";
 import { Sidebar } from "@/components/common/Sidebar";
+import { Spinner } from "@/components/common/Spinner";
+import type { HandleDateType } from "@/components/features/Option/SelectPeriod";
 import { Graph } from "@/components/features/RobotGraph/Graph";
 import { Options } from "@/components/features/RobotGraph/Options";
 import { ResultTable } from "@/components/features/RobotGraph/ResultTable";
-import type { TrashResult } from "@/types";
+import { breakpoints } from "@/styles/variants";
+
+type ContextType = {
+  robotId: string;
+  minDate: Date;
+  maxDate: Date;
+  startDate: Date;
+  endDate: Date;
+  periodLoading: boolean;
+  handleRobotId: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleStartDate: HandleDateType;
+  handleEndDate: HandleDateType;
+};
+
+export const RobotGraphContext = createContext<ContextType | null>(null);
+
+export const useRobotGraph = () => {
+  const context = useContext(RobotGraphContext);
+  if (!context) {
+    throw new Error("useOptions must be used within an OptionsProvider");
+  }
+  return context;
+};
 
 export const RobotGraphPage = () => {
+  // select(input)
   const [robotId, setRobotId] = useState("all");
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
-  console.log(robotId, fromDate, toDate);
+  const handleRobotId = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setRobotId(event.target.value);
+  };
+
+  // period
+  const [minDate, setminDate] = useState(new Date());
+  const [maxDate, setMaxDate] = useState(new Date());
+  const { data: period, isLoading: periodLoading } = useGetGraphPeriod(robotId);
+
+  const handleStartDate = (date: Date | null) => {
+    if (date) setStartDate(date);
+  };
+
+  const handleEndDate = (date: Date | null) => {
+    if (date) setEndDate(date);
+  };
+
+  // trash result
+  const {
+    data: trashResult,
+    isLoading: resultLoading,
+    isError: resultError,
+  } = useGetTrashResult({
+    robotId,
+    startDate: format(startDate, "yyyy.MM.dd"),
+    endDate: format(endDate, "yyyy.MM.dd"),
+  });
+
+  const contextValue = {
+    robotId,
+    minDate,
+    maxDate,
+    startDate,
+    endDate,
+    periodLoading,
+    handleRobotId,
+    handleStartDate,
+    handleEndDate,
+  };
+
+  useEffect(() => {
+    setminDate(period?.data ? period.data.start_time : new Date());
+    setMaxDate(period?.data ? period.data.end_time : new Date());
+  }, [period]);
+
+  useEffect(() => {
+    setStartDate(minDate);
+  }, [minDate]);
+
+  useEffect(() => {
+    setEndDate(maxDate);
+  }, [maxDate]);
 
   return (
-    <Wrapper>
-      <Sidebar
-        title="시간별 쓰레기"
-        title2="수거 결과 조회"
-        description="해변 자율 청소 로봇의 시간별 쓰레기 수거 결과 조회 페이지입니다. 쓰레기 수거 결과를 그래프를 통해 확인할 수 있습니다."
-        Options={
-          <Options
-            setRobotId={setRobotId}
-            fromDate={fromDate}
-            setFromDate={setFromDate}
-            toDate={toDate}
-            setToDate={setToDate}
-          />
-        }
-      />
-      <Content>
-        <InnerWrapper>
-          <Graph data={Data} />
-        </InnerWrapper>
-        <InnerWrapper>
-          <ResultTable data={Data} />
-        </InnerWrapper>
-      </Content>
-    </Wrapper>
+    <RobotGraphContext.Provider value={contextValue}>
+      <Wrapper>
+        <Sidebar
+          title="시간별 쓰레기"
+          title2="수거 결과 조회"
+          description="해변 자율 청소 로봇의 시간별 쓰레기 수거 결과 조회 페이지입니다. 쓰레기 수거 결과를 그래프를 통해 확인할 수 있습니다."
+          Options={<Options />}
+        />
+        <Content>
+          {periodLoading || resultLoading ? (
+            <SpinnerWrapper>
+              <Spinner />
+            </SpinnerWrapper>
+          ) : resultError ? (
+            <p>데이터를 불러오는 중 에러가 발생했습니다.</p>
+          ) : !trashResult || trashResult.data.length == 0 ? (
+            <p>해당 기간에 조회할 데이터가 없습니다.</p>
+          ) : (
+            <>
+              <InnerWrapper>
+                <Graph data={trashResult ? trashResult.data : []} />
+              </InnerWrapper>
+              <InnerWrapper>
+                <ResultTable data={trashResult ? trashResult.data : []} />
+              </InnerWrapper>
+            </>
+          )}
+        </Content>
+      </Wrapper>
+    </RobotGraphContext.Provider>
   );
 };
 
 const Wrapper = styled.div`
   display: flex;
   min-height: 300px;
-  min-width: 768px;
+`;
+
+const SpinnerWrapper = styled.div`
+  width: 100%;
+  height: 40px;
+  display: flex;
+  justify-content: center;
 `;
 
 const Content = styled.div`
-  margin-left: 300px;
-  padding: 16px;
-  width: 100%;
-  margin-bottom: 30px;
+  position: relative;
+  height: calc(100vh - 54px);
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+
+  overflow: scroll;
+
+  justify-content: flex-start;
+  padding: 30px 45px;
+
+  @media screen and (min-width: ${breakpoints.md}) {
+    align-items: center;
+    padding: 45px 45px 0;
+  }
+  @media screen and (min-width: ${breakpoints.lg}) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
 `;
 
 const InnerWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   margin-top: 30px;
-`;
+  max-width: 800px;
 
-const Data: TrashResult[] = [
-  {
-    time: "2024.08.15",
-    all: 55,
-    plastic: 18,
-    paper: 12,
-    general: 25,
-  },
-  {
-    time: "2024.08.16",
-    all: 77,
-    plastic: 23,
-    paper: 14,
-    general: 40,
-  },
-  {
-    time: "2024.08.17",
-    all: 56,
-    plastic: 19,
-    paper: 5,
-    general: 32,
-  },
-  {
-    time: "2024.08.18",
-    all: 55,
-    plastic: 18,
-    paper: 12,
-    general: 25,
-  },
-  {
-    time: "2024.08.19",
-    all: 71,
-    plastic: 16,
-    paper: 20,
-    general: 35,
-  },
-  {
-    time: "2024.08.20",
-    all: 51,
-    plastic: 24,
-    paper: 6,
-    general: 21,
-  },
-  {
-    time: "2024.08.21",
-    all: 53,
-    plastic: 21,
-    paper: 10,
-    general: 22,
-  },
-  {
-    time: "2024.08.22",
-    all: 51,
-    plastic: 22,
-    paper: 9,
-    general: 19,
-  },
-];
+  @media screen and (min-width: 1000px) {
+    align-items: center;
+  }
+`;

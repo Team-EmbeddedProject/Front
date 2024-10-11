@@ -1,43 +1,39 @@
 import { Select } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
-import { useGetRobots } from "@/api/hooks/useGetRobots.";
 import { Spinner } from "@/components/common/Spinner";
+import type { RobotData } from "@/types";
 
 type Props = {
-  setRobotId: (id: string) => void;
+  loading: boolean;
+  handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  data: RobotData[];
 };
 
-export const Options = ({ setRobotId }: Props) => {
-  const { data, isLoading } = useGetRobots();
-
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRobotId(event.target.value);
-  };
-
+export const SelectRobot = ({ loading, handleChange, data }: Props) => {
   return (
-    <Wrapper>
-      <OptionTitle>조회 로봇</OptionTitle>
-      {isLoading ? (
+    <OptionWrapper>
+      <OptionTitle>로봇</OptionTitle>
+      {loading ? (
         <SpinnerWrapper>
           <Spinner />
         </SpinnerWrapper>
       ) : (
         <Select variant="outline" defaultValue="all" onChange={handleChange} backgroundColor="#fff">
           <option value="all">전체</option>
-          {data?.data.map((robot) => (
+          {data.map((robot) => (
             <option key={robot.id} value={robot.id}>
               [{robot.id}] {robot.name}
             </option>
           ))}
         </Select>
       )}
-    </Wrapper>
+    </OptionWrapper>
   );
 };
 
-const Wrapper = styled.div`
-  width: auto;
+const OptionWrapper = styled.div`
+  margin-bottom: 28px;
 `;
 
 const OptionTitle = styled.div`

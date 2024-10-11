@@ -43,13 +43,13 @@ export const TableLine = ({ tableType, data }: Props) => {
           {data.time}
         </Column>
         <Column width={TABLE_WIDTH.PLASTIC} color="#383838">
-          {data.general}
+          {data.plastic}
         </Column>
         <Column width={TABLE_WIDTH.PAPER} color="#383838">
-          {data.paper}
+          {data.pack}
         </Column>
         <Column width={TABLE_WIDTH.GENERAL} color="#383838">
-          {data.plastic}
+          {data.can}
         </Column>
         <Column width={TABLE_WIDTH.ALL} color="#383838">
           {data.all}

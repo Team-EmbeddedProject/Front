@@ -1,23 +1,44 @@
-import { Select } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 
+import { useGetRobots } from "@/api/hooks/useGetRobots.";
+import { SelectPeriod } from "@/components/features/Option/SelectPeriod";
+import { SelectRobot } from "@/components/features/Option/SelectRobot";
+import { useRobotDistribution } from "@/pages/RobotDistribution";
+
 type Props = {
-  setRobotId: (id: string) => void;
+  message: string;
 };
 
-export const Options = ({ setRobotId }: Props) => {
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setRobotId(event.target.value);
-  };
+export const Options = ({ message }: Props) => {
+  const { data: robotList, isLoading: robotLoading } = useGetRobots();
+  const {
+    periodLoading,
+    minDate,
+    maxDate,
+    startDate,
+    endDate,
+    handleRobotId,
+    handleStartDate,
+    handleEndDate,
+  } = useRobotDistribution();
+
   return (
     <Wrapper>
-      <OptionTitle>조회 로봇</OptionTitle>
-      <Select variant="outline" defaultValue="all" onChange={handleChange} backgroundColor="#fff">
-        <option value="all">전체</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-      </Select>
+      <SelectRobot
+        loading={robotLoading}
+        data={robotList?.data ? robotList.data : []}
+        handleChange={handleRobotId}
+      />
+      <SelectPeriod
+        isLoading={periodLoading}
+        minDate={minDate}
+        maxDate={maxDate}
+        startDate={startDate}
+        endDate={endDate}
+        handleStartDate={handleStartDate}
+        handleEndDate={handleEndDate}
+      />
+      <Message>{message}</Message>
     </Wrapper>
   );
 };
@@ -26,9 +47,8 @@ const Wrapper = styled.div`
   width: auto;
 `;
 
-const OptionTitle = styled.div`
-  font-size: 16px;
-  font-weight: 700;
-  color: #383838;
-  margin-bottom: 10px;
+const Message = styled.p`
+  font-size: var(--font-size-p);
+  font-weight: var(--font-weight-light);
+  color: var(--color-gray);
 `;
